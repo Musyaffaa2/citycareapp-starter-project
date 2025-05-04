@@ -83,11 +83,19 @@ export default class App {
 
     // Get page instance
     const page = route();
-
-    this.#content.innerHTML = await page.render();
-    await page.afterRender();
-
-    scrollTo({ top: 0, behavior: 'instant' });
-    this.#setupNavigationList();
+ 
+    if (!document.startViewTransition) {
+      this.#content.innerHTML = await page.render();
+      await page.afterRender();
+      return;
+    }
+    const transition = document.startViewTransition(async () => {
+      this.#content.innerHTML = await page.render();
+      await page.afterRender();
+    });
+    transition.updateCallbackDone.then(() => {
+      scrollTo({ top: 0, behavior: 'instant' });
+      this.#setupNavigationList();
+    });
   }
 }
