@@ -19,6 +19,14 @@
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 @media screen and (width > 600px) {
   form .form-buttons {
     flex-direction: row;
